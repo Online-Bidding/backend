@@ -1,5 +1,7 @@
 package com.bidding.bidding_platform.controller;
 import java.util.List;
+
+import com.bidding.bidding_platform.dto.LoginRequest;
 import com.bidding.bidding_platform.model.User;
 import com.bidding.bidding_platform.service.UserService;
 import com.bidding.bidding_platform.dto.UserUpdateRequest;
@@ -40,5 +42,10 @@ public class UserController {
     public User updateSingleUser(@PathVariable Integer id,
                                                    @RequestBody UserUpdateRequest request){
         return userService.updateUserById(id, request);
+    }
+
+    @PostMapping("/login")
+    public User loginUser(@RequestBody LoginRequest loginRequest){
+        return userService.loginUser(loginRequest);
     }
 }

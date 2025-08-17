@@ -1,5 +1,6 @@
 package com.bidding.bidding_platform.service;
 
+import com.bidding.bidding_platform.dto.LoginRequest;
 import com.bidding.bidding_platform.model.User;
 import com.bidding.bidding_platform.repository.UserRepository;
 import com.bidding.bidding_platform.dto.UserUpdateRequest;
@@ -53,10 +54,26 @@ public class UserService {
             user.setEmail(request.getEmail());
         }
 
-        if (request.getRole() != null) {
-            user.setRole(request.getRole());
+        if (request.getStatus() != null) {
+            user.setStatus(request.getStatus());
         }
 
         return userRepository.save(user);
+    }
+
+    public User loginUser(LoginRequest loginRequest) {
+        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("User not found with email " + loginRequest.getEmail());
+        }
+
+        User user = optionalUser.get();
+
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            throw new RuntimeException("Incorrect password");
+        }
+
+        return user;
     }
 }
