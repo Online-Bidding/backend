@@ -8,10 +8,20 @@ POST localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-  "name": "Abdulla Zakey",
-  "email": "mzabdulla25@gmail.com",
-  "password": "ucsc",
-  "role": "Bidder"
+  "username": "abdulla",
+  "name": "Zakey Abdulla",
+  "email": "mzabdulla@gmail.com",
+  "password": "ucsc@123",
+  "status": "active"
+}
+
+###
+POST localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "email": "mzabdulla@gmail.com",
+  "password": "ucsc@123"
 }
 
 ###
