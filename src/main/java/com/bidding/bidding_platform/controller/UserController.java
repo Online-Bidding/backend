@@ -5,12 +5,11 @@ import com.bidding.bidding_platform.dto.LoginRequest;
 import com.bidding.bidding_platform.model.User;
 import com.bidding.bidding_platform.service.UserService;
 import com.bidding.bidding_platform.dto.UserUpdateRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/users")
-@CrossOrigin("*") //Allow frontend to access backend
+@CrossOrigin(origins = "http://localhost:5173") //Allow frontend to access backend
 public class UserController {
     private final UserService userService;
 
