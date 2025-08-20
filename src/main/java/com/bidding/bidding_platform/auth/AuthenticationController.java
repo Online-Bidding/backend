@@ -2,13 +2,12 @@ package com.bidding.bidding_platform.auth;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin("http://localhost:5173")
 public class AuthenticationController {
 
     private final AuthenticationService service;
@@ -25,9 +24,23 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register (
+    public ResponseEntity<AuthenticationResponse> authenticate (
             @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok((service.authenticate(request)));
+        try {
+            return ResponseEntity.ok(service.authenticate(request));
+        } catch (BadCredentialsException e) {
+            // Handle bad credentials specifically
+            AuthenticationResponse errorResponse = AuthenticationResponse.builder()
+                    .message("Invalid email or password")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        } catch (Exception e) {
+            // Handle other authentication errors
+            AuthenticationResponse errorResponse = AuthenticationResponse.builder()
+                    .message("Authentication failed: " + e.getMessage())
+                    .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 }

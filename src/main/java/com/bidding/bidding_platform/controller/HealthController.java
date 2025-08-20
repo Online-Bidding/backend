@@ -1,21 +1,25 @@
 package com.bidding.bidding_platform.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("http://localhost:5173")
 public class HealthController {
 
     @GetMapping("/health")
-    public Map<String, String> healthCheck() {
-        System.out.println("Health check endpoint hit!");
-        return Map.of(
-                "status", "OK",
-                "service", "your-service-name",
-                "timestamp", java.time.Instant.now().toString()
-        );
+    public ResponseEntity<Map<String, Object>> healthCheck() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "OK");
+        response.put("message", "Backend is running");
+        response.put("timestamp", LocalDateTime.now());
+        response.put("service", "Bidding Platform API");
+
+        return ResponseEntity.ok(response);
     }
 }
